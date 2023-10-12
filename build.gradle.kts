@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.kirik"
-version = "0.0.1-SNAPSHOT"
+version = "1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -36,4 +36,18 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks {
+    val copyDockerfile = register<Copy>("copyDockerfile") {
+        from("DockerFile")
+        into("$buildDir")
+    }
+    register<Exec>("buildDockerImage") {
+        workingDir("$buildDir")
+        executable("docker")
+        args(listOf("build", "-t", "pomodo", "."))
+        dependsOn(bootJar)
+        dependsOn(copyDockerfile)
+    }
 }

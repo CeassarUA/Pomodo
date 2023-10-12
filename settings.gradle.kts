@@ -1,1 +1,1 @@
-rootProject.name = "Pomodo"
+rootProject.name = "pomodo"
